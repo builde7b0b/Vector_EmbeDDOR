@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Product Recommendation
+        </title>
+    </head>
+    <body>
+        <h1>Product Recommendation</h1>
+        <form action="/recommend" method="POST">
+            <input type="text" name="query" placeholder="Enter a product description">
+            <input type="submit" value="Recommend">
+
+        </form>
+        <div id="recommendations"></div>
+        <script>
+            document.querySelector('form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const query = e.target.query.value;
+                const response = await fetch('/recommend', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ query}),
+                });
+                const data = await response.json();
+                const recommendations = data.recommendations.join('<br>');
+                document.getElementById('recommendations').innerHTML = `<h2>Recommended Products:</h2>${recommendations}`;
+
+            });
+        </script>
+    </body>
+</html>
